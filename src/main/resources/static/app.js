@@ -14,14 +14,20 @@ function setConnected(connected) {
 
 function connect() {
     var socket = new SockJS('/chat');
+    let ramal = $("#ramal").val();
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/messages', function (messageOutput) {
+        stompClient.subscribe(`/topic/messages/${ramal}`, function (messageOutput) {
             showMessageOutput(JSON.parse(messageOutput.body));
         });
     });
+
+    setInterval(async () => {
+         await fetch(`http://172.21.213.82:8080/connect/${ramal}`);
+         console.log('request');
+    }, 5000);
 }
 
 function disconnect() {
