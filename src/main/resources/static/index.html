@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hello WebSocket</title>
+    <title>Monitoramento Protocolo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/main.css" rel="stylesheet">
     <script src="/webjars/jquery/jquery.min.js"></script>
@@ -18,24 +19,41 @@
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
-                    <label for="connect">WebSocket connection:</label>
-                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect</button>
-                    <label for="ramal">Informe o ramal:</label>
-                    <input type="text" id="ramal" class="form-control" placeholder="Ramal...">
+                    <label for="fila">Informe a fila para monitorar os protocolos:</label>
+                    <select class="form-control" id="fila" name="fila">
+                        <option value="none">Selecione uma fila...</option>
+                        <option value="BancoPovo">Banco do Povo</option>
+                        <option value="CadastroFisico">Cadastro Físico</option>
+                        <option value="Central">Central</option>
+                        <option value="Divida">Dívida</option>
+                        <option value="FiscalizacaoObra">Fiscalização Obra</option>
+                        <option value="FiscalizacaoRenda">Fiscalização Renda</option>
+                        <option value="GTA">GTA</option>
+                        <option value="RH">RH</option>
+                        <option value="Telefonista">Telefonista</option>
+                        <option value="UsoDeSolo">Uso de Solo</option>
+                    </select>
+                    <button id="monitorar" class="btn btn-default" type="submit">Monitorar</button>
+                    <button id="cancelar" class="btn btn-default" type="submit" disabled="disabled">Cancelar</button>
                 </div>
             </form>
         </div>
     </div>
-    <div class="row">
+    <div class="row" id="div-table">
+        <br />
+        <br />
+        <br />
         <div class="col-md-12">
-            <table id="conversation" class="table table-striped">
+            <table id="tb-protocolos" class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Chat</th>
+                    <th scope="col">Protocolo</th>
+                    <th scope="col">Origem</th>
+                    <th scope="col">Destino</th>
+                    <th scope="col">Data/Hora</th>
                 </tr>
                 </thead>
-                <tbody id="chat">
+                <tbody id="tb-body-protocolos">
                 </tbody>
             </table>
         </div>

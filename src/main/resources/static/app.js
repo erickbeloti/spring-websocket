@@ -1,33 +1,28 @@
 var stompClient = null;
 
 function setConnected(connected) {
-    $("#connect").prop("disabled", connected);
-    $("#disconnect").prop("disabled", !connected);
+    $("#monitorar").prop("disabled", connected);
+    $("#cancelar").prop("disabled", !connected);
     if (connected) {
-        $("#conversation").show();
+        $("#div-table").show();
     }
     else {
-        $("#conversation").hide();
+        $("#div-table").hide();
     }
-    $("#chat").html("");
+    $("#tb-body-protocolos").html("");
 }
 
 function connect() {
-    var socket = new SockJS('/chat');
-    let ramal = $("#ramal").val();
+    let ramal = $("#fila").val();
+    var socket = new SockJS("/chat");
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
-        console.log('Connected: ' + frame);
+        console.log('Conectado: ' + frame);
         stompClient.subscribe(`/topic/messages/${ramal}`, function (messageOutput) {
-            showMessageOutput(JSON.parse(messageOutput.body));
-        });
+            showMessageOutput(messageOutput.body);
+        }, { id: ramal});
     });
-
-    setInterval(async () => {
-         await fetch(`http://172.21.213.82:8080/connect/${ramal}`);
-         console.log('request');
-    }, 5000);
 }
 
 function disconnect() {
@@ -35,25 +30,27 @@ function disconnect() {
         stompClient.disconnect();
     }
     setConnected(false);
-    console.log("Disconnected");
+    console.log("Desconectado");
 }
 
-function sendMessage() {
-    stompClient.send("/app/chat", {}, JSON.stringify({'from': $("#from").val(), 'text': $("#text").val()}));
-}
-
-function showMessageOutput(message) {
-    $("#chat").append("<br /><br />");
-    $("#chat").append("<tr><td>" + message.from + ' - ' + message.time + "</td></tr>");
-    $("#chat").append("<tr><td>" + message.text + "</td></tr>");
+function showMessageOutput(json) {
+    $("#tb-body-protocolos").html("");
+    myObj = JSON.parse(json);
+    for (x in myObj) {
+        $("#tb-body-protocolos").append("<tr>");
+        $("#tb-body-protocolos").append("<td>" + myObj[x].numero + "</td>");
+        $("#tb-body-protocolos").append("<td>" + myObj[x].origem + "</td>");
+        $("#tb-body-protocolos").append("<td>" + myObj[x].destino + "</td>");
+        $("#tb-body-protocolos").append("<td>" + myObj[x].dataHora + "</td>");
+        $("#tb-body-protocolos").append("</tr>");
+    }
 }
 
 $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
     });
-    $( "#connect" ).click(function() { connect(); });
-    $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#send" ).click(function() { sendMessage(); });
+    $("#monitorar").click(function() { connect(); });
+    $("#cancelar").click(function() { disconnect(); });
+    $("#div-table").hide();
 });
-
