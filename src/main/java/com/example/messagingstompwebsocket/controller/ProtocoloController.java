@@ -31,7 +31,7 @@ public class ProtocoloController {
 		simpUserRegistry.getUsers().forEach((user) -> {
 					user.getSessions().forEach((session) -> {
 						session.getSubscriptions().forEach((subscription) -> {
-							List<Protocolo> protocoloList = protocoloService.findTop5ByDestinoOrderByDataHoraDesc(subscription.getId());
+							List<Protocolo> protocoloList = protocoloService.findTop10ByDestinoOrderByDataHoraDesc(subscription.getId());
 							String time = new SimpleDateFormat("HH:mm:ss").format(new Date());
 							simpMessagingTemplate.convertAndSend(subscription.getDestination(), protocoloList);
 						});

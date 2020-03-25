@@ -37,13 +37,26 @@ function showMessageOutput(json) {
     $("#tb-body-protocolos").html("");
     myObj = JSON.parse(json);
     for (x in myObj) {
-        $("#tb-body-protocolos").append("<tr>");
-        $("#tb-body-protocolos").append("<td>" + myObj[x].numero + "</td>");
-        $("#tb-body-protocolos").append("<td>" + myObj[x].origem + "</td>");
-        $("#tb-body-protocolos").append("<td>" + myObj[x].destino + "</td>");
-        $("#tb-body-protocolos").append("<td>" + myObj[x].dataHora + "</td>");
-        $("#tb-body-protocolos").append("</tr>");
+        let tr =  `
+            <tr>
+                <td>${new Intl.NumberFormat('pt-BR').format(myObj[x].numero)}</td>
+                <td>${formatPhone(myObj[x].origem)}</td>
+                <td>${myObj[x].destino}</td>
+                <td>${myObj[x].dataHora}</td>
+            </tr>
+        `;
+        $("#tb-body-protocolos").append(tr);
     }
+}
+
+function formatPhone(number) {
+    if (number.length == 11) {
+        number = `(${number.substr(0,2)}) ${number.substr(2,5)} - ${number.substr(7)}`
+    } else if (number.length == 10) {
+        number = `(${number.substr(0,2)}) ${number.substr(2,4)} - ${number.substr(6)}`
+    }
+
+    return number;
 }
 
 $(function () {

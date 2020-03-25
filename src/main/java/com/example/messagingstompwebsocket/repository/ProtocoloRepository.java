@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ProtocoloRepository extends JpaRepository<Protocolo, Long> {
 
-    List<Protocolo> findTop5ByDestinoOrderByDataHoraDesc(String destino);
+    List<Protocolo> findTop10ByDestinoOrderByDataHoraDesc(String destino);
 }

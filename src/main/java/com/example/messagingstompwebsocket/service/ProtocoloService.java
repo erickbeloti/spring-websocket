@@ -13,8 +13,8 @@ public class ProtocoloService {
     @Autowired
     private ProtocoloRepository protocoloRepository;
 
-    public List<Protocolo> findTop5ByDestinoOrderByDataHoraDesc(String destino){
-        return protocoloRepository.findTop5ByDestinoOrderByDataHoraDesc(destino);
+    public List<Protocolo> findTop10ByDestinoOrderByDataHoraDesc(String destino){
+        return protocoloRepository.findTop10ByDestinoOrderByDataHoraDesc(destino);
     }
 
 }
